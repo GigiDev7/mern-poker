@@ -1,3 +1,4 @@
+import GameButtons from "./GameButtons";
 import Player from "./Player";
 
 const Table = () => {
@@ -8,6 +9,9 @@ const Table = () => {
       </p>
       <div className="absolute bottom-5 left-1/2 -translate-x-1/2 ">
         <Player />
+      </div>
+      <div className="absolute left-1/2 -translate-x-1/2 -bottom-20">
+        <GameButtons />
       </div>
     </div>
   );
