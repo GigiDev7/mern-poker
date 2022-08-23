@@ -2,8 +2,8 @@ const { loginUser, registerUser } = require("../services/user");
 
 const register = async (req, res, next) => {
   try {
-    const { user, token } = await registerUser(req.body);
-    const { email, username, dateOfBirth } = user;
+    const { newUser, token } = await registerUser(req.body);
+    const { email, username, dateOfBirth } = newUser;
     res.status(200).json({ email, username, dateOfBirth, token });
   } catch (error) {
     next(error);

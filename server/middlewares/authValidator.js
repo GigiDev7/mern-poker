@@ -32,6 +32,7 @@ exports.registerValidation = checkSchema({
   },
   username: {
     in: ["body"],
+    isString: true,
     errorMessage: "Username is requried",
   },
   dateOfBirth: {

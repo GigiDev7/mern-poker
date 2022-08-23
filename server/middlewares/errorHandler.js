@@ -1,6 +1,12 @@
 exports.errorHandler = (err, req, res, next) => {
   if (err.code === 11000) {
-    res.status(400).json(err);
+    let message;
+    if (err.keyPattern["username"]) {
+      message = "Username exists";
+    } else {
+      message = "Email exists";
+    }
+    res.status(400).json({ message });
   } else if (err.name === "ValidationError") {
     res.status(400).json({ message: err.message });
   } else if (err.name === "Authentication Error") {
