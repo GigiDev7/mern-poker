@@ -5,12 +5,14 @@ const cors = require("cors");
 const { errorHandler } = require("./middlewares/errorHandler");
 
 const userRouter = require("./routes/user");
+const tableRouter = require("./routes/table");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
 app.use("/user", userRouter);
+app.use("/table", tableRouter);
 
 app.use(errorHandler);
 
