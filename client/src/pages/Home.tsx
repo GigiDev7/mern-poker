@@ -1,9 +1,12 @@
 import { useState } from "react";
 import Auth from "../components/Auth";
 import bg from "../images/poker.jpg";
+import { useDispatch } from "react-redux";
+import { clearErrors } from "../actions/auth";
 
 const Home = () => {
   const [authType, setAuthType] = useState("");
+  const dispatch = useDispatch();
 
   const handleAuthType = (val: string) => {
     setAuthType(val);
@@ -11,6 +14,7 @@ const Home = () => {
 
   const closeAuthForm = () => {
     setAuthType("");
+    dispatch(clearErrors());
   };
 
   return (

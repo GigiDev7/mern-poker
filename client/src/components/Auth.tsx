@@ -1,8 +1,9 @@
 import { FormEvent, useEffect, useState } from "react";
 import { AiOutlineClose, AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginUser, registerUser } from "../actions/auth";
 import { useNavigate } from "react-router-dom";
+import { IUserState } from "../reducers/authReducer";
 
 interface IProps {
   type: string;
@@ -25,8 +26,14 @@ const Auth = ({ type, closeAuthForm }: IProps) => {
     username: "",
   });
 
+  const { error, user } = useSelector(
+    (state: { auth: IUserState }) => state.auth
+  );
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const handlePasswordShow = (val: "confirmPassword" | "password") => {
-    console.log(val);
     setShowPassword((prev) => {
       return { ...prev, [val]: !prev[val] };
     });
@@ -39,9 +46,11 @@ const Auth = ({ type, closeAuthForm }: IProps) => {
     });
   };
 
-  const dispatch = useDispatch();
-
-  const navigate = useNavigate();
+  useEffect(() => {
+    if (user) {
+      navigate("/tables", { replace: true });
+    }
+  }, [user, navigate]);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -64,19 +73,20 @@ const Auth = ({ type, closeAuthForm }: IProps) => {
       const { confirmPassword, ...userData } = formData;
       dispatch<any>(registerUser(userData));
     }
-    navigate("/tavles", { replace: true });
   };
 
   useEffect(() => {
-    const min = new Date().getTime() - 21 * 365 * 24 * 60 * 60 * 1000;
-    const year = new Date(min).getFullYear().toString();
-    const month = new Date(min).getMonth().toString();
-    const day = new Date(min).getDay().toString();
-    setMinDate(
-      `${year}-${month.length === 2 ? month : `0${month}`}-${
-        day.length === 2 ? day : `0${day}`
-      }`
-    );
+    if (type === "register") {
+      const min = new Date().getTime() - 21 * 365 * 24 * 60 * 60 * 1000;
+      const year = new Date(min).getFullYear().toString();
+      const month = new Date(min).getMonth().toString();
+      const day = new Date(min).getDay().toString();
+      setMinDate(
+        `${year}-${month.length === 2 ? month : `0${month}`}-${
+          day.length === 2 ? day : `0${day}`
+        }`
+      );
+    }
   }, []);
 
   return (
@@ -94,6 +104,11 @@ const Auth = ({ type, closeAuthForm }: IProps) => {
       {valid && (
         <span className="text-md font-semibold text-red-500 text-center">
           {valid}
+        </span>
+      )}
+      {error && (
+        <span className="text-md font-semibold text-red-500 text-center">
+          {error}
         </span>
       )}
       {type === "register" && (

@@ -11,7 +11,11 @@ export const loginUser =
       dispatch({ type: "SET_USER", payload: data });
       localStorage.setItem("user", JSON.stringify(data));
     } catch (error: any) {
-      dispatch({ type: "AUTH_ERROR", payload: error.response.data });
+      const errorData = error.response.data;
+      let msg;
+      if (errorData?.message) msg = errorData.message;
+      if (errorData?.errors?.length) msg = errorData.errors[0].msg;
+      dispatch({ type: "AUTH_ERROR", payload: msg });
     }
   };
 
@@ -31,11 +35,19 @@ export const registerUser =
       dispatch({ type: "SET_USER", payload: data });
       localStorage.setItem("user", JSON.stringify(data));
     } catch (error: any) {
-      dispatch({ type: "AUTH_ERROR", payload: error.response.data });
+      const errorData = error.response.data;
+      let msg;
+      if (errorData?.message) msg = errorData.message;
+      if (errorData?.errors?.length) msg = errorData.errors[0].msg;
+      dispatch({ type: "AUTH_ERROR", payload: msg });
     }
   };
 
 export const logout = () => async (dispatch: Dispatch) => {
   localStorage.removeItem("user");
-  return { type: "LOGOUT" };
+  dispatch({ type: "LOGOUT" });
+};
+
+export const clearErrors = () => {
+  return { type: "CLEAR_ERRORS" };
 };

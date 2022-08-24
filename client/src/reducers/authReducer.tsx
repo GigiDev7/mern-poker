@@ -24,7 +24,11 @@ export interface ILogout {
   readonly type: "LOGOUT";
 }
 
-type Action = ISetUser | IAuthError | ILogout;
+export interface IClearErrors {
+  readonly type: "CLEAR_ERRORS";
+}
+
+type Action = ISetUser | IAuthError | ILogout | IClearErrors;
 
 export const authReducer = (
   state: IUserState = { user: null, error: null },
@@ -39,6 +43,9 @@ export const authReducer = (
 
     case "AUTH_ERROR":
       return { ...state, error: action.payload };
+
+    case "CLEAR_ERRORS":
+      return { ...state, error: null };
 
     default:
       return state;
