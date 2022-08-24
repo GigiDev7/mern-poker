@@ -1,8 +1,7 @@
 import { FormEvent, useEffect, useState } from "react";
-import { AiOutlineClose } from "react-icons/ai";
-import { useDispatch, useSelector } from "react-redux";
+import { AiOutlineClose, AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { useDispatch } from "react-redux";
 import { loginUser, registerUser } from "../actions/auth";
-import { IUserState } from "../reducers/authReducer";
 import { useNavigate } from "react-router-dom";
 
 interface IProps {
@@ -13,6 +12,10 @@ interface IProps {
 const Auth = ({ type, closeAuthForm }: IProps) => {
   const [minDate, setMinDate] = useState("");
   const [valid, setValid] = useState("");
+  const [showPassword, setShowPassword] = useState({
+    confirmPassword: false,
+    password: false,
+  });
 
   const [formData, setFormData] = useState({
     email: "",
@@ -22,8 +25,12 @@ const Auth = ({ type, closeAuthForm }: IProps) => {
     username: "",
   });
 
-  const { user } = useSelector((state: { auth: IUserState }) => state.auth);
-  console.log(user);
+  const handlePasswordShow = (val: "confirmPassword" | "password") => {
+    console.log(val);
+    setShowPassword((prev) => {
+      return { ...prev, [val]: !prev[val] };
+    });
+  };
 
   const handleChange = (e: FormEvent) => {
     const target = e.target as HTMLInputElement;
@@ -41,10 +48,6 @@ const Auth = ({ type, closeAuthForm }: IProps) => {
     if (type === "login") {
       dispatch<any>(loginUser(formData.email, formData.password));
     } else {
-      if (formData.confirmPassword !== formData.password) {
-        setValid("Passwords don't match");
-        return;
-      }
       if (
         !formData.email ||
         !formData.password ||
@@ -52,6 +55,10 @@ const Auth = ({ type, closeAuthForm }: IProps) => {
         !formData.username
       ) {
         setValid("All fields are requried");
+        return;
+      }
+      if (formData.confirmPassword !== formData.password) {
+        setValid("Passwords don't match");
         return;
       }
       const { confirmPassword, ...userData } = formData;
@@ -113,23 +120,36 @@ const Auth = ({ type, closeAuthForm }: IProps) => {
           id="email"
           className="border-[1px] border-gray-400 outline-0 rounded pl-1"
           type="text"
+          placeholder="example@example.com"
         />
       </div>
-      <div className="flex flex-col gap-2">
-        <label className="font-medium" htmlFor="password">
+      <div className="flex flex-col gap-2 relative">
+        <label className="font-medium " htmlFor="password">
           Password
         </label>
         <input
           onChange={handleChange}
           name="password"
           id="password"
-          className="border-[1px] rounded border-gray-400 outline-0 pl-1"
-          type="passwordtext"
+          className=" border-[1px] rounded border-gray-400 outline-0 pl-1"
+          type={showPassword.password ? "text" : "password"}
+          placeholder="Password"
         />
+        {showPassword.password ? (
+          <AiFillEye
+            onClick={() => handlePasswordShow("password")}
+            className="absolute bottom-1 cursor-pointer right-2"
+          />
+        ) : (
+          <AiFillEyeInvisible
+            onClick={() => handlePasswordShow("password")}
+            className="absolute bottom-1 cursor-pointer right-2"
+          />
+        )}
       </div>
       {type === "register" && (
         <>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 relative">
             <label className="font-medium" htmlFor="confirmPassword">
               Confirm Password
             </label>
@@ -138,8 +158,20 @@ const Auth = ({ type, closeAuthForm }: IProps) => {
               name="confirmPassword"
               id="confirmPassword"
               className="border-[1px] rounded border-gray-400 outline-0 pl-1"
-              type="passwordtext"
+              type={showPassword.confirmPassword ? "text" : "password"}
+              placeholder="Confirm Password"
             />
+            {showPassword.confirmPassword ? (
+              <AiFillEye
+                onClick={() => handlePasswordShow("confirmPassword")}
+                className="absolute bottom-1 cursor-pointer right-2"
+              />
+            ) : (
+              <AiFillEyeInvisible
+                onClick={() => handlePasswordShow("confirmPassword")}
+                className="absolute bottom-1 cursor-pointer right-2"
+              />
+            )}
           </div>
           <div className="flex flex-col gap-2">
             <label className="font-medium">Date of birth</label>

@@ -34,3 +34,8 @@ export const registerUser =
       dispatch({ type: "AUTH_ERROR", payload: error.response.data });
     }
   };
+
+export const logout = () => async (dispatch: Dispatch) => {
+  localStorage.removeItem("user");
+  return { type: "LOGOUT" };
+};

@@ -20,7 +20,11 @@ export interface IAuthError {
   readonly payload: any;
 }
 
-type Action = ISetUser | IAuthError;
+export interface ILogout {
+  readonly type: "LOGOUT";
+}
+
+type Action = ISetUser | IAuthError | ILogout;
 
 export const authReducer = (
   state: IUserState = { user: null, error: null },
@@ -29,6 +33,9 @@ export const authReducer = (
   switch (action.type) {
     case "SET_USER":
       return { ...state, user: action.payload };
+
+    case "LOGOUT":
+      return { ...state, user: null };
 
     case "AUTH_ERROR":
       return { ...state, error: action.payload };
