@@ -60,7 +60,6 @@ const Home = () => {
       )}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
         <h1 className="text-white text-5xl">Welcome to WSOP Poker</h1>
-        <p className="text-white text-3xl text-center mt-4">Sign in to play</p>
       </div>
       {authType && (
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">

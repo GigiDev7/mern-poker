@@ -6,16 +6,30 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import ErrorBoundary from "./components/ErrorBoundary";
 import ProtectRoutes from "./components/ProtectRoutes";
+import { useLocation } from "react-router-dom";
+import jwt_decode from "jwt-decode";
+import { logout } from "./actions/auth";
 
 function App() {
   const dispatch = useDispatch();
+  const location = useLocation();
 
   useEffect(() => {
     const user = localStorage.getItem("user");
     if (user) {
       dispatch({ type: "SET_USER", payload: JSON.parse(user) });
     }
-  });
+  }, [dispatch]);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user")!);
+    if (user) {
+      const decodedToken: any = jwt_decode(user.token);
+      if (decodedToken.exp < new Date().getTime()) {
+        dispatch<any>(logout());
+      }
+    }
+  }, [location, dispatch]);
 
   return (
     <ErrorBoundary>
