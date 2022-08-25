@@ -8,7 +8,7 @@ interface IProp {
 }
 
 const ProtectRoutes: React.FC<IProp> = ({ children }) => {
-  const { user } = useSelector((state: { auth: IUserState }) => state.auth);
+  const user = JSON.parse(localStorage.getItem("user")!);
 
   if (!user) {
     return <Navigate to="/" replace={true} />;

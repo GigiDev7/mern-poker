@@ -6,8 +6,16 @@ import { FaTable } from "react-icons/fa";
 import { BiLogOut } from "react-icons/bi";
 import { logout } from "../actions/auth";
 import { useNavigate } from "react-router-dom";
+import Modal from "../components/Modal";
+import { useState } from "react";
 
 const Tables = () => {
+  const [isModalShown, setIsModalShown] = useState(true);
+
+  const handleModalClose = () => {
+    setIsModalShown(false);
+  };
+
   const { user } = useSelector((state: { auth: IUserState }) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -45,6 +53,10 @@ const Tables = () => {
           <FaTable className="text-white text-xl" />
         </div>
       </div>
+
+      {isModalShown && (
+        <Modal tableId="asdxasdxasd8" handleModalClose={handleModalClose} />
+      )}
     </div>
   );
 };

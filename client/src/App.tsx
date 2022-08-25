@@ -25,11 +25,11 @@ function App() {
     const user = JSON.parse(localStorage.getItem("user")!);
     if (user) {
       const decodedToken: any = jwt_decode(user.token);
-      if (decodedToken.exp < new Date().getTime()) {
+      if (Date.now() >= decodedToken.exp * 1000) {
         dispatch<any>(logout());
       }
     }
-  }, [location, dispatch]);
+  }, [location.pathname, dispatch]);
 
   return (
     <ErrorBoundary>
