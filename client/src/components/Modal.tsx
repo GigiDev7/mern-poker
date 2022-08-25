@@ -1,5 +1,9 @@
 import { useState } from "react";
 import { AiOutlineClose, AiOutlineCopy } from "react-icons/ai";
+import { BsFillArrowRightCircleFill } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { ITableState } from "../reducers/tableReducer";
 
 interface IProps {
   tableId: string;
@@ -8,6 +12,11 @@ interface IProps {
 
 const Modal = ({ tableId, handleModalClose }: IProps) => {
   const [isTextShown, setIsTextShown] = useState(false);
+  const { table } = useSelector(
+    (state: { tables: ITableState }) => state.tables
+  );
+
+  const navigate = useNavigate();
 
   const handleCopy = () => {
     navigator.clipboard.writeText(tableId);
@@ -19,6 +28,11 @@ const Modal = ({ tableId, handleModalClose }: IProps) => {
     setTimeout(() => {
       setIsTextShown(false);
     }, 1500);
+  };
+
+  const handleNavigate = () => {
+    handleModalClose();
+    navigate(`/table/${table?._id}`);
   };
 
   return (
@@ -39,6 +53,16 @@ const Modal = ({ tableId, handleModalClose }: IProps) => {
             />
           </div>
           {isTextShown && <h1 className="">Copied to clipboard!</h1>}
+          <button
+            onClick={handleNavigate}
+            type="button"
+            className="flex items-center gap-1 font-medium mt-2"
+          >
+            Go to table
+            <span>
+              <BsFillArrowRightCircleFill className="mt-1" />
+            </span>
+          </button>
         </div>
       </div>
     </>

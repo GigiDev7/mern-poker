@@ -6,19 +6,16 @@ import { FaTable } from "react-icons/fa";
 import { BiLogOut } from "react-icons/bi";
 import { logout } from "../actions/auth";
 import { useNavigate } from "react-router-dom";
-import Modal from "../components/Modal";
 import { useRef, useState } from "react";
 import { createTable } from "../actions/table";
-import { ITableState } from "../reducers/tableReducer";
+import Modal from "../components/Modal";
 
 const Tables = () => {
-  const [isModalShown, setIsModalShown] = useState(false);
   const [isTableIdFormShown, setIsTableIdFormShown] = useState(false);
+  const [isModalShown, setIsModalShown] = useState(false);
 
   const { user } = useSelector((state: { auth: IUserState }) => state.auth);
-  const { table } = useSelector(
-    (state: { tables: ITableState }) => state.tables
-  );
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -42,7 +39,8 @@ const Tables = () => {
   };
 
   const handleTableCreate = () => {
-    dispatch<any>(createTable(user!.token, navigate));
+    dispatch<any>(createTable(user!.token));
+    setIsModalShown(true);
   };
 
   return (
@@ -80,6 +78,10 @@ const Tables = () => {
         </div>
       </div>
 
+      {isModalShown && (
+        <Modal tableId="sadsada" handleModalClose={handleModalClose} />
+      )}
+
       {isTableIdFormShown && (
         <div className="bg-white  w-[350px] h-[200px] rounded-sm absolute z-10">
           <AiOutlineClose
@@ -98,10 +100,6 @@ const Tables = () => {
             </button>
           </div>
         </div>
-      )}
-
-      {isModalShown && (
-        <Modal tableId="asdxasdxasd8" handleModalClose={handleModalClose} />
       )}
     </div>
   );
