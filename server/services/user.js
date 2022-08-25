@@ -1,13 +1,7 @@
 const User = require("../models/userSchema");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-
-class CustomError {
-  constructor(name, message) {
-    this.message = message;
-    this.name = name;
-  }
-}
+const CustomError = require("../utils/customError");
 
 const createToken = (userId) => {
   return jwt.sign({ id: userId }, process.env.JWT_SECRET, {

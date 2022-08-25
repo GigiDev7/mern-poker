@@ -6,20 +6,29 @@ import { FaTable } from "react-icons/fa";
 import { BiLogOut } from "react-icons/bi";
 import { logout } from "../actions/auth";
 import { useNavigate } from "react-router-dom";
-import { useRef, useState } from "react";
-import { createTable } from "../actions/table";
+import { useEffect, useState } from "react";
+import { createTable, joinTable } from "../actions/table";
 import Modal from "../components/Modal";
+import { ITableState } from "../reducers/tableReducer";
 
 const Tables = () => {
   const [isTableIdFormShown, setIsTableIdFormShown] = useState(false);
   const [isModalShown, setIsModalShown] = useState(false);
+  const [tableId, setTableId] = useState("");
 
   const { user } = useSelector((state: { auth: IUserState }) => state.auth);
+  const { table } = useSelector(
+    (state: { tables: ITableState }) => state.tables
+  );
+
+  useEffect(() => {
+    if (table) {
+      setIsModalShown(true);
+    }
+  }, [table]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const tableIdRef = useRef(null);
 
   const handleTableIdFormClose = () => {
     setIsTableIdFormShown(false);
@@ -40,7 +49,10 @@ const Tables = () => {
 
   const handleTableCreate = () => {
     dispatch<any>(createTable(user!.token));
-    setIsModalShown(true);
+  };
+
+  const handleJoin = () => {
+    dispatch<any>(joinTable(user!.token, tableId, navigate));
   };
 
   return (
@@ -79,7 +91,7 @@ const Tables = () => {
       </div>
 
       {isModalShown && (
-        <Modal tableId="sadsada" handleModalClose={handleModalClose} />
+        <Modal tableId={table!._id} handleModalClose={handleModalClose} />
       )}
 
       {isTableIdFormShown && (
@@ -91,11 +103,16 @@ const Tables = () => {
           <div className="flex flex-col justify-center h-full gap-3">
             <label className="font-semibold mx-auto">Enter Table Id:</label>
             <input
-              ref={tableIdRef}
+              value={tableId}
+              onChange={(e) => setTableId(e.target.value)}
               type="text"
               className="border-[1px] border-black w-[80%] mx-auto"
             />
-            <button className="bg-blue-500 w-1/2 mx-auto py-2 rounded text-white hover:bg-blue-600">
+            <button
+              type="button"
+              onClick={handleJoin}
+              className="bg-blue-500 w-1/2 mx-auto py-2 rounded text-white hover:bg-blue-600"
+            >
               Join
             </button>
           </div>

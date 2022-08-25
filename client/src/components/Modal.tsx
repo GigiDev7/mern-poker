@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlineClose, AiOutlineCopy } from "react-icons/ai";
 import { BsFillArrowRightCircleFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +10,7 @@ interface IProps {
   handleModalClose: () => void;
 }
 
-const Modal = ({ tableId, handleModalClose }: IProps) => {
+const Modal = ({ handleModalClose, tableId }: IProps) => {
   const [isTextShown, setIsTextShown] = useState(false);
   const { table } = useSelector(
     (state: { tables: ITableState }) => state.tables
@@ -31,8 +31,8 @@ const Modal = ({ tableId, handleModalClose }: IProps) => {
   };
 
   const handleNavigate = () => {
-    handleModalClose();
     navigate(`/table/${table?._id}`);
+    handleModalClose();
   };
 
   return (

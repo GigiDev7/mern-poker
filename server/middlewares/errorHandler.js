@@ -11,6 +11,8 @@ exports.errorHandler = (err, req, res, next) => {
     res.status(400).json({ message: err.message });
   } else if (err.name === "Authentication Error") {
     res.status(403).json({ message: err.message });
+  } else if (err.name === "No Table") {
+    res.status(404).json({ message: err.message });
   } else {
     res.status(500).json(err);
   }

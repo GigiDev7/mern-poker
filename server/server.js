@@ -8,7 +8,7 @@ const userRouter = require("./routes/user");
 const tableRouter = require("./routes/table");
 
 const app = express();
-app.use(cors());
+app.use(cors({ origin: true }));
 app.use(express.json());
 
 app.use("/user", userRouter);
