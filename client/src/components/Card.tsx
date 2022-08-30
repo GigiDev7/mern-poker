@@ -8,10 +8,22 @@ import { GiPokerHand } from "react-icons/gi";
 
 const Card = ({ type, card }: { type: string; card: string }) => {
   const cardObject: any = {
-    H: <BsFillSuitHeartFill />,
-    D: <BsFillSuitDiamondFill />,
+    H: <BsFillSuitHeartFill className="text-red-600" />,
+    D: <BsFillSuitDiamondFill className="text-red-600" />,
     C: <BsFillSuitClubFill />,
     S: <BsFillSuitSpadeFill />,
+    HB: (
+      <BsFillSuitHeartFill className="text-red-600 text-2xl font-bold absolute right-[2px]" />
+    ),
+    DB: (
+      <BsFillSuitDiamondFill className="text-red-600 text-2xl font-bold absolute right-[2px]" />
+    ),
+    CB: (
+      <BsFillSuitClubFill className="text-2xl font-bold absolute right-[2px]" />
+    ),
+    SB: (
+      <BsFillSuitSpadeFill className="text-2xl font-bold absolute right-[2px]" />
+    ),
   };
 
   if (type === "personal") {
@@ -21,7 +33,9 @@ const Card = ({ type, card }: { type: string; card: string }) => {
           {card.length === 2 ? card[0] : "10"}
         </p>
         {card.length === 2 ? cardObject[card[1]] : cardObject[card[2]]}
-        <BsFillSuitClubFill className="text-2xl font-bold absolute right-[2px]" />
+        {card.length === 2
+          ? cardObject[`${card[1]}B`]
+          : cardObject[`${card[2]}B`]}
       </div>
     );
   } else {
