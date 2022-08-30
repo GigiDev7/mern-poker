@@ -1,7 +1,6 @@
 import axios from "axios";
 import { NavigateFunction } from "react-router-dom";
 import { Dispatch } from "redux";
-import { ITableState } from "../reducers/tableReducer";
 
 export const createTable = (token: string) => async (dispatch: Dispatch) => {
   try {

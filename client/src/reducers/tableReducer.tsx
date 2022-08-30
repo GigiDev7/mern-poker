@@ -1,11 +1,17 @@
+export interface IPlayer {
+  cards: string[];
+  chips: number;
+  player: string;
+}
+
 export interface ITableState {
-  table: { players: string[]; _id: string } | null;
+  table: { players: IPlayer[]; _id: string } | null;
   error: any;
 }
 
 export interface ICreateTable {
   readonly type: "CREATE_TABLE";
-  readonly payload: { players: string[]; _id: string };
+  readonly payload: { players: IPlayer[]; _id: string };
 }
 
 export interface ITableError {
@@ -15,7 +21,7 @@ export interface ITableError {
 
 export interface IJoinTable {
   readonly type: "JOIN_TABLE";
-  readonly payload: { players: string[]; _id: string };
+  readonly payload: { players: IPlayer[]; _id: string };
 }
 
 export interface IUpdateTable {

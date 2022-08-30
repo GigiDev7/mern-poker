@@ -20,7 +20,7 @@ const Player = ({ gameData }: IProps) => {
       </div>
       <div className="flex flex-col items-center">
         <h1 className="font-semibold text-lg capitalize">
-          {table?.players[0]}
+          {table?.players[0]?.player}
         </h1>
         {table?.players && table.players.length > 1 && (
           <p className=" font-semibold text-md">{gameData[0]?.chips}</p>

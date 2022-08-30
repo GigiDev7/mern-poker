@@ -6,7 +6,7 @@ import {
 } from "react-icons/bs";
 import { GiPokerHand } from "react-icons/gi";
 
-const Card = ({ type, card }: { type: string; card: string }) => {
+const Card = ({ type = "personal", card }: { type: string; card: string }) => {
   const cardObject: any = {
     H: <BsFillSuitHeartFill className="text-red-600" />,
     D: <BsFillSuitDiamondFill className="text-red-600" />,

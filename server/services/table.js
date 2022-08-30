@@ -2,7 +2,7 @@ const Table = require("../models/tableSchema");
 const CustomError = require("../utils/customError");
 
 const addTable = (username) => {
-  return Table.create({ players: [username] });
+  return Table.create({ players: [{ player: username, cards: [] }] });
 };
 
 const addPlayerToTable = async (username, tableId) => {
@@ -10,7 +10,7 @@ const addPlayerToTable = async (username, tableId) => {
   if (!table) {
     throw new CustomError("No Table", "Table does not exist");
   }
-  table.players.push(username);
+  table.players.push({ player: username, cards: [] });
   await table.save();
   return table;
 };

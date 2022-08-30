@@ -1,5 +1,4 @@
 const { addTable, addPlayerToTable } = require("../services/table");
-const Table = require("../models/tableSchema");
 
 const createTable = async (req, res, next) => {
   try {
@@ -20,27 +19,4 @@ const joinTable = async (req, res, next) => {
   }
 };
 
-const getUpdatedTable = async (req, res, next) => {
-  try {
-    const { tableId } = req.params;
-
-    res.writeHead(200, {
-      Connection: "keep-alive",
-      "Content-Type": "text/event-stream",
-      "Cache-Control": "no-cache",
-    });
-
-    setInterval(async () => {
-      const table = await Table.findById(tableId);
-      console.log(table);
-      res.write(`data: ${JSON.stringify(table)}`);
-    }, 3000);
-
-    ////res.write("data:" + JSON.stringify(table));
-  } catch (error) {
-    console.log(error);
-    next(error);
-  }
-};
-
-module.exports = { createTable, joinTable, getUpdatedTable };
+module.exports = { createTable, joinTable };

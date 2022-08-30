@@ -3,16 +3,11 @@ const router = express.Router();
 
 const protectAuth = require("../middlewares/protectAuth");
 
-const {
-  createTable,
-  joinTable,
-  getUpdatedTable,
-} = require("../controllers/table");
+const { createTable, joinTable } = require("../controllers/table");
 
-//router.use(protectAuth);
+router.use(protectAuth);
 
-router.route("/create").post(protectAuth, createTable);
-router.route("/join/:tableId").patch(protectAuth, joinTable);
-router.route("/:tableId").get(getUpdatedTable);
+router.route("/create").post(createTable);
+router.route("/join/:tableId").patch(joinTable);
 
 module.exports = router;

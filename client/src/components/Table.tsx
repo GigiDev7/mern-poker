@@ -14,6 +14,8 @@ const Table = () => {
     (state: { tables: ITableState }) => state.tables
   );
 
+  const [turn, setTurn] = useState(0);
+
   const dispatch = useDispatch();
   const params = useParams();
   const socket = io("http://localhost:8888");
@@ -24,22 +26,17 @@ const Table = () => {
     });
     socket.on("get-table", (data) => {
       dispatch(updateTable(JSON.parse(data)));
+      const cards = generateCards(4);
+      setGameData([
+        { cards: [cards[0], cards[1]], chips: 20000 },
+        { cards: [cards[2], cards[3]], chips: 20000 },
+      ]);
     });
   }, []);
 
   const [gameData, setGameData] = useState<
     { cards: string[]; chips: number }[]
   >([]);
-
-  useEffect(() => {
-    if (table?.players && table?.players.length > 1) {
-      const cards = generateCards(4);
-      setGameData([
-        { cards: [cards[0], cards[1]], chips: 20000 },
-        { cards: [cards[2], cards[3]], chips: 20000 },
-      ]);
-    }
-  }, [table?.players]);
 
   return (
     <div className="bg-green-600 w-[600px] h-[350px] rounded-[40%] relative">
@@ -52,8 +49,10 @@ const Table = () => {
             <Card type="oponnent" card={el} key={el} />
           ))}
           <div>
-            <h1 className="font-semibold text-lg">Oponnent7</h1>
-            <p className=" font-semibold text-md">300.00</p>
+            <h1 className="font-semibold text-lg capitalize text-amber-400">
+              {table?.players[1]?.player}
+            </h1>
+            <p className=" font-semibold text-md">{gameData[1]?.chips}</p>
           </div>
         </div>
       )}
