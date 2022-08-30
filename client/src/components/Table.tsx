@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ITableState } from "../reducers/tableReducer";
 import { IUserState } from "../reducers/authReducer";
@@ -27,8 +27,8 @@ const Table = () => {
     socket.on("connect", () => {
       socket.emit("send-tableId", params.tableId);
     });
-    socket.on("get-table", (data) => {
-      console.log(data);
+    socket.on("get-table", (data, turn) => {
+      console.log(data, turn);
       dispatch(updateTable(JSON.parse(data)));
     });
   }, []);
@@ -40,8 +40,8 @@ const Table = () => {
       </p>
       {table?.players && table?.players.length > 1 && (
         <div className="absolute top-2 flex gap-2 left-1/3">
-          {opponent?.cards.map((el) => (
-            <Card type="oponnent" card={el} key={el} />
+          {opponent?.cards.map((el, indx) => (
+            <Card type="oponnent" card={el} key={indx} />
           ))}
           <div>
             <h1 className={`font-semibold text-lg capitalize `}>

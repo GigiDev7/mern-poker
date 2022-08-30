@@ -15,8 +15,8 @@ const Player = ({ playerInfo }: IProps) => {
   return (
     <div className="flex  items-center gap-2">
       <div className="flex gap-2">
-        {playerInfo?.cards.map((el) => (
-          <Card type="personal" card={el} key={el} />
+        {playerInfo?.cards.map((el, indx) => (
+          <Card type="personal" card={el} key={indx} />
         ))}
       </div>
       <div className="flex flex-col items-center">
