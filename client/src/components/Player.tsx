@@ -2,7 +2,11 @@ import { useSelector } from "react-redux";
 import { ITableState } from "../reducers/tableReducer";
 import Card from "./Card";
 
-const Player = () => {
+interface IProps {
+  gameData: { cards: string[]; chips: number }[];
+}
+
+const Player = ({ gameData }: IProps) => {
   const { table } = useSelector(
     (state: { tables: ITableState }) => state.tables
   );
@@ -10,14 +14,17 @@ const Player = () => {
   return (
     <div className="flex  items-center gap-2">
       <div className="flex gap-2">
-        <Card type="personal" />
-        <Card type="personal" />
+        {gameData[0]?.cards.map((el) => (
+          <Card type="personal" card={el} key={el} />
+        ))}
       </div>
       <div className="flex flex-col items-center">
         <h1 className="font-semibold text-lg capitalize">
           {table?.players[0]}
         </h1>
-        <p className=" font-semibold text-md">200.00</p>
+        {table?.players && table.players.length > 1 && (
+          <p className=" font-semibold text-md">{gameData[0]?.chips}</p>
+        )}
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 export interface ITableState {
-  table: { players: String[]; _id: string } | null;
+  table: { players: string[]; _id: string } | null;
   error: any;
 }
 
@@ -18,7 +18,12 @@ export interface IJoinTable {
   readonly payload: { players: string[]; _id: string };
 }
 
-type Action = ICreateTable | ITableError | IJoinTable;
+export interface IUpdateTable {
+  readonly type: "UPDATE_TABLE";
+  readonly payload: { players: string[]; _id: string };
+}
+
+type Action = ICreateTable | ITableError | IJoinTable | IUpdateTable;
 
 export const tableReducer = (
   state: ITableState = { table: null, error: null },
@@ -32,6 +37,9 @@ export const tableReducer = (
       return { ...state, error: action.payload };
 
     case "JOIN_TABLE":
+      return { ...state, table: action.payload };
+
+    case "UPDATE_TABLE":
       return { ...state, table: action.payload };
 
     default:

@@ -6,12 +6,21 @@ import {
 } from "react-icons/bs";
 import { GiPokerHand } from "react-icons/gi";
 
-const Card = ({ type }: { type: string }) => {
+const Card = ({ type, card }: { type: string; card: string }) => {
+  const cardObject: any = {
+    H: <BsFillSuitHeartFill />,
+    D: <BsFillSuitDiamondFill />,
+    C: <BsFillSuitClubFill />,
+    S: <BsFillSuitSpadeFill />,
+  };
+
   if (type === "personal") {
     return (
       <div className="w-[50px] h-[75px] shadow-md rounded relative bg-white">
-        <p className="text-2xl font-bold">8</p>
-        <BsFillSuitClubFill className="font-bold" />
+        <p className="text-2xl font-bold">
+          {card.length === 2 ? card[0] : "10"}
+        </p>
+        {card.length === 2 ? cardObject[card[1]] : cardObject[card[2]]}
         <BsFillSuitClubFill className="text-2xl font-bold absolute right-[2px]" />
       </div>
     );

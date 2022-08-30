@@ -1,6 +1,7 @@
 import axios from "axios";
 import { NavigateFunction } from "react-router-dom";
 import { Dispatch } from "redux";
+import { ITableState } from "../reducers/tableReducer";
 
 export const createTable = (token: string) => async (dispatch: Dispatch) => {
   try {
@@ -34,3 +35,7 @@ export const joinTable =
       dispatch({ type: "TABLE_ERROR", payload: error });
     }
   };
+
+export const updateTable = (tableData: { players: string[]; _id: string }) => {
+  return { type: "UPDATE_TABLE", payload: tableData };
+};

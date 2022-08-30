@@ -13,6 +13,12 @@ const GameButtons = () => {
         type="button"
         className="px-6 rounded py-3 bg-white hover:bg-gray-200 font-semibold"
       >
+        Check
+      </button>
+      <button
+        type="button"
+        className="px-6 rounded py-3 bg-white hover:bg-gray-200 font-semibold"
+      >
         Raise
       </button>
       <button
