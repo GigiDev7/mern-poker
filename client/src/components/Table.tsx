@@ -19,6 +19,8 @@ const Table = () => {
   const player = table?.players.find((el) => el.player === user?.username);
   const opponent = table?.players.find((el) => el.player !== user?.username);
 
+  const [turn, setTurn] = useState("");
+
   const dispatch = useDispatch();
   const params = useParams();
   const socket = io("http://localhost:8888");
@@ -28,8 +30,8 @@ const Table = () => {
       socket.emit("send-tableId", params.tableId);
     });
     socket.on("get-table", (data, turn) => {
-      console.log(data, turn);
       dispatch(updateTable(JSON.parse(data)));
+      setTurn(turn);
     });
   }, []);
 
@@ -44,7 +46,11 @@ const Table = () => {
             <Card type="oponnent" card={el} key={indx} />
           ))}
           <div>
-            <h1 className={`font-semibold text-lg capitalize `}>
+            <h1
+              className={`font-semibold text-lg capitalize ${
+                turn === opponent?.player && "text-amber-300"
+              }`}
+            >
               {opponent?.player}
             </h1>
             <p className=" font-semibold text-md">{opponent?.chips}</p>
@@ -52,7 +58,7 @@ const Table = () => {
         </div>
       )}
       <div className="absolute bottom-5 left-1/2 -translate-x-1/2 ">
-        <Player playerInfo={player} />
+        <Player turn={turn} playerInfo={player} />
       </div>
       {table?.players && table?.players.length > 1 && (
         <div className="absolute left-1/2 -translate-x-1/2 -bottom-20">
