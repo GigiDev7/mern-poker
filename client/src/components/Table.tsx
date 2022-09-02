@@ -48,6 +48,14 @@ const Table = () => {
       </p>
       {table?.players && table?.players.length > 1 && (
         <div className="absolute top-2 flex gap-2 left-1/3">
+          {opponent?.player && (
+            <div className="mr-3">
+              <BiDollarCircle className="text-blue-700 text-2xl" />
+              <p className="text-white text-xl">
+                {playingChips[opponent!.player]}
+              </p>
+            </div>
+          )}
           {opponent?.cards.map((el, indx) => (
             <Card type="oponnent" card={el} key={indx} />
           ))}
