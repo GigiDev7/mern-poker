@@ -38,3 +38,7 @@ export const joinTable =
 export const updateTable = (tableData: { players: string[]; _id: string }) => {
   return { type: "UPDATE_TABLE", payload: tableData };
 };
+
+export const updateChips = (chips: number, player: string) => {
+  return { type: "UPDATE_CHIPS", payload: { chips, player } };
+};

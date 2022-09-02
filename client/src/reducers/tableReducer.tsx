@@ -7,6 +7,8 @@ export interface IPlayer {
 export interface ITableState {
   table: { players: IPlayer[]; _id: string } | null;
   error: any;
+  playingChips: any;
+  pot: number;
 }
 
 export interface ICreateTable {
@@ -29,10 +31,20 @@ export interface IUpdateTable {
   readonly payload: { players: string[]; _id: string };
 }
 
-type Action = ICreateTable | ITableError | IJoinTable | IUpdateTable;
+export interface IUpdateChips {
+  readonly type: "UPDATE_CHIPS";
+  readonly payload: { chips: number; player: string };
+}
+
+type Action =
+  | ICreateTable
+  | ITableError
+  | IJoinTable
+  | IUpdateTable
+  | IUpdateChips;
 
 export const tableReducer = (
-  state: ITableState = { table: null, error: null },
+  state: ITableState = { table: null, playingChips: null, pot: 0, error: null },
   action: Action
 ) => {
   switch (action.type) {
@@ -47,6 +59,31 @@ export const tableReducer = (
 
     case "UPDATE_TABLE":
       return { ...state, table: action.payload };
+
+    case "UPDATE_CHIPS":
+      const player = state.table?.players.find(
+        (el) => el.player === action.payload.player
+      );
+      const newPlayer = {
+        ...player,
+        chips: player!.chips - action.payload.chips,
+      };
+      Object.assign(player as IPlayer, newPlayer);
+
+      let newPlayingChips = {
+        ...state.playingChips,
+        [action.payload.player]: action.payload.chips,
+      };
+
+      const vals: number[] = Object.values(newPlayingChips);
+
+      let newPot = vals.reduce((a, b) => a + b, 0);
+
+      return {
+        ...state,
+        pot: newPot,
+        playingChips: newPlayingChips,
+      };
 
     default:
       return state;

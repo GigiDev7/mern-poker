@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { IUserState } from "../reducers/authReducer";
 import { ITableState } from "../reducers/tableReducer";
 import Card from "./Card";
+import { BiDollarCircle } from "react-icons/bi";
 
 interface IProps {
   playerInfo: { player: string; cards: string[]; chips: number } | undefined;
@@ -10,7 +11,7 @@ interface IProps {
 }
 
 const Player = ({ playerInfo, turn }: IProps) => {
-  const { table } = useSelector(
+  const { table, playingChips } = useSelector(
     (state: { tables: ITableState }) => state.tables
   );
 
@@ -23,6 +24,10 @@ const Player = ({ playerInfo, turn }: IProps) => {
 
   return (
     <div className="flex  items-center gap-2">
+      <div className="mr-3">
+        <BiDollarCircle className="text-blue-700 text-2xl" />
+        <p className="text-white text-xl">{playingChips[playerInfo!.player]}</p>
+      </div>
       <div className="flex gap-2">
         {playerInfo?.cards.map((el, indx) => (
           <Card type="personal" card={el} key={indx} />
@@ -42,7 +47,7 @@ const Player = ({ playerInfo, turn }: IProps) => {
             <input
               type="range"
               min={0}
-              max={20000}
+              max={playerInfo?.chips}
               value={chipCount}
               onChange={(e) => handleChipCountChange(e)}
             />
@@ -50,7 +55,7 @@ const Player = ({ playerInfo, turn }: IProps) => {
               type="number"
               className="border-[1px] w-[90%]"
               min={0}
-              max={20000}
+              max={playerInfo?.chips}
               value={chipCount}
               onChange={(e) => handleChipCountChange(e)}
             />
