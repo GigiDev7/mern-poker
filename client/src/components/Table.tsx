@@ -84,7 +84,7 @@ const Table = () => {
       <div className="absolute bottom-5 left-1/2 -translate-x-1/2 ">
         <Player turn={turn} playerInfo={player} />
       </div>
-      {table?.players && table?.players.length > 1 && (
+      {table?.players && table?.players.length > 1 && player?.player === turn && (
         <div className="absolute left-1/2 -translate-x-1/2 -bottom-20">
           <GameButtons />
         </div>
