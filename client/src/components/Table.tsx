@@ -40,8 +40,11 @@ const Table = () => {
   }, []);
 
   const handleFold = () => {
-    const socket = io("http://localhost:8888");
     socket.emit("fold", turn, { table, pot, playingChips });
+  };
+
+  const handleAllIn = () => {
+    socket.emit("all-in", turn, { table, pot, playingChips });
   };
 
   return (
@@ -89,7 +92,7 @@ const Table = () => {
       </div>
       {table?.players && table?.players.length > 1 && player?.player === turn && (
         <div className="absolute left-1/2 -translate-x-1/2 -bottom-20">
-          <GameButtons handleFold={handleFold} />
+          <GameButtons handleFold={handleFold} handleAllIn={handleAllIn} />
         </div>
       )}
     </div>

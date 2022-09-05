@@ -57,4 +57,18 @@ io.on("connection", (socket) => {
       playingChips,
     });
   });
+
+  socket.on("all-in", (turn, tableData) => {
+    let { table, pot, playingChips } = tableData;
+    const turnPlayer = table.players.find((el) => el.player === turn);
+    const secondPlayer = table.players.find((el) => el.player !== turn);
+    pot = pot + turnPlayer.chips;
+    playingChips[turnPlayer.player] =
+      turnPlayer.chips + playingChips[turnPlayer.player];
+    turnPlayer.chips = 0;
+    io.emit("update-game", JSON.stringify(table), secondPlayer.player, {
+      pot,
+      playingChips,
+    });
+  });
 });

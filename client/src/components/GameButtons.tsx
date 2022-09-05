@@ -3,9 +3,10 @@ import { IPlayer, ITableState } from "../reducers/tableReducer";
 
 interface IProps {
   handleFold: () => void;
+  handleAllIn: () => void;
 }
 
-const GameButtons = ({ handleFold }: IProps) => {
+const GameButtons = ({ handleFold, handleAllIn }: IProps) => {
   const { playingChips } = useSelector(
     (state: { tables: ITableState }) => state.tables
   );
@@ -36,6 +37,7 @@ const GameButtons = ({ handleFold }: IProps) => {
         Raise
       </button>
       <button
+        onClick={handleAllIn}
         type="button"
         className="w-[7em] rounded py-3 bg-white hover:bg-gray-200 font-semibold"
       >
