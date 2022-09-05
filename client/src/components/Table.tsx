@@ -13,15 +13,15 @@ import { AiTwotoneDollarCircle } from "react-icons/ai";
 import { BiDollarCircle } from "react-icons/bi";
 
 const Table = () => {
-  const { table, playingChips, pot } = useSelector(
+  const { table, playingChips, pot, turn } = useSelector(
     (state: { tables: ITableState }) => state.tables
   );
   const { user } = useSelector((state: { auth: IUserState }) => state.auth);
 
+  const [update, setUpdate] = useState({});
+
   const player = table?.players.find((el) => el.player === user?.username);
   const opponent = table?.players.find((el) => el.player !== user?.username);
-
-  const [turn, setTurn] = useState("");
 
   const dispatch = useDispatch();
   const params = useParams();
@@ -31,15 +31,24 @@ const Table = () => {
     socket.on("connect", () => {
       socket.emit("send-tableId", params.tableId);
     });
-    socket.on("get-table", (data, turn) => {
-      dispatch(updateTable(JSON.parse(data)));
-      setTurn(turn);
-      if (!playingChips) {
-        dispatch(updateChips(100, JSON.parse(data).players[1].player));
-        dispatch(updateChips(50, turn));
-      }
+    socket.on("get-table", (data, turn, gameData) => {
+      dispatch(updateTable(JSON.parse(data), turn, gameData));
+    });
+    socket.on("update-game", (data, turn, gameData) => {
+      dispatch(updateTable(JSON.parse(data), turn, gameData));
     });
   }, []);
+
+  /*  useEffect(() => {
+    socket.on("update-game", (data, turn, gameData) => {
+      dispatch(updateTable(JSON.parse(data), turn, gameData));
+    });
+  }, [update]); */
+
+  const handleFold = () => {
+    const socket = io("http://localhost:8888");
+    socket.emit("fold", turn, { table, pot, playingChips });
+  };
 
   return (
     <div className="bg-green-600 w-[600px] h-[350px] rounded-[40%] relative">
@@ -48,7 +57,7 @@ const Table = () => {
       </p>
       {table?.players && table?.players.length > 1 && (
         <div className="absolute top-2 flex gap-2 left-1/3">
-          {opponent?.player && (
+          {opponent?.player && playingChips && (
             <div className="mr-3">
               <BiDollarCircle className="text-blue-700 text-2xl" />
               <p className="text-white text-xl">
@@ -86,7 +95,7 @@ const Table = () => {
       </div>
       {table?.players && table?.players.length > 1 && player?.player === turn && (
         <div className="absolute left-1/2 -translate-x-1/2 -bottom-20">
-          <GameButtons />
+          <GameButtons handleFold={handleFold} />
         </div>
       )}
     </div>

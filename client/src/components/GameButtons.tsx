@@ -1,7 +1,11 @@
 import { useSelector } from "react-redux";
 import { IPlayer, ITableState } from "../reducers/tableReducer";
 
-const GameButtons = () => {
+interface IProps {
+  handleFold: () => void;
+}
+
+const GameButtons = ({ handleFold }: IProps) => {
   const { playingChips } = useSelector(
     (state: { tables: ITableState }) => state.tables
   );
@@ -38,6 +42,7 @@ const GameButtons = () => {
         All In
       </button>
       <button
+        onClick={handleFold}
         type="button"
         className="w-[7em] rounded py-3 bg-white hover:bg-gray-200 font-semibold"
       >

@@ -24,7 +24,7 @@ const Player = ({ playerInfo, turn }: IProps) => {
 
   return (
     <div className="flex  items-center gap-2">
-      {playerInfo?.player && (
+      {playerInfo?.player && playingChips && (
         <div className="mr-3">
           <BiDollarCircle className="text-blue-700 text-2xl" />
           <p className="text-white text-xl">

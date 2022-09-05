@@ -9,6 +9,7 @@ export interface ITableState {
   error: any;
   playingChips: any;
   pot: number;
+  turn: string;
 }
 
 export interface ICreateTable {
@@ -28,7 +29,11 @@ export interface IJoinTable {
 
 export interface IUpdateTable {
   readonly type: "UPDATE_TABLE";
-  readonly payload: { players: string[]; _id: string };
+  readonly payload: {
+    tableData: { players: string[]; _id: string };
+    turn: string;
+    gameData: { pot: number; playingChips: any };
+  };
 }
 
 export interface IUpdateChips {
@@ -36,15 +41,27 @@ export interface IUpdateChips {
   readonly payload: { chips: number; player: string };
 }
 
+export interface IFold {
+  readonly type: "FOLD";
+  readonly payload: string;
+}
+
 type Action =
   | ICreateTable
   | ITableError
   | IJoinTable
   | IUpdateTable
-  | IUpdateChips;
+  | IUpdateChips
+  | IFold;
 
 export const tableReducer = (
-  state: ITableState = { table: null, playingChips: null, pot: 0, error: null },
+  state: ITableState = {
+    table: null,
+    playingChips: null,
+    pot: 0,
+    turn: "",
+    error: null,
+  },
   action: Action
 ) => {
   switch (action.type) {
@@ -58,7 +75,13 @@ export const tableReducer = (
       return { ...state, table: action.payload };
 
     case "UPDATE_TABLE":
-      return { ...state, table: action.payload };
+      return {
+        ...state,
+        table: action.payload.tableData,
+        turn: action.payload.turn,
+        playingChips: action.payload.gameData.playingChips,
+        pot: action.payload.gameData.pot,
+      };
 
     case "UPDATE_CHIPS":
       const player = state.table?.players.find(
