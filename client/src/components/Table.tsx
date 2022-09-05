@@ -39,12 +39,6 @@ const Table = () => {
     });
   }, []);
 
-  /*  useEffect(() => {
-    socket.on("update-game", (data, turn, gameData) => {
-      dispatch(updateTable(JSON.parse(data), turn, gameData));
-    });
-  }, [update]); */
-
   const handleFold = () => {
     const socket = io("http://localhost:8888");
     socket.emit("fold", turn, { table, pot, playingChips });

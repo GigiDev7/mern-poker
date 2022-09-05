@@ -53,20 +53,17 @@ const cards = [
   "AD",
 ];
 
-const generateCards = (numberOfCards = 1, usedCards = []) => {
+const generateCards = (usedCards = []) => {
   let filteredCards = [];
   if (usedCards.length) {
     filteredCards = cards.filter((el) => !usedCards.includes(el));
   } else {
     filteredCards = [...cards];
   }
-  let randomCards = [];
-  for (let i = 0; i < numberOfCards; i++) {
-    const randNum = Math.floor(Math.random() * filteredCards.length);
-    randomCards.push(filteredCards[randNum]);
-  }
+  const randNum = Math.floor(Math.random() * filteredCards.length);
+  let randomCard = filteredCards[randNum];
 
-  return randomCards;
+  return randomCard;
 };
 
 module.exports = generateCards;

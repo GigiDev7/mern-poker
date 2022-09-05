@@ -23,9 +23,12 @@ io.on("connection", (socket) => {
         table?.players[0].cards.length === 0 &&
         table?.players[1].cards.length === 0
       ) {
-        const cards = generateCards(4);
-        table.players[0].cards.push(cards[0], cards[1]);
-        table.players[1].cards.push(cards[2], cards[3]);
+        const firstCard = generateCards();
+        const secondCard = generateCards([firstCard]);
+        const thirdCard = generateCards([secondCard, firstCard]);
+        const fourthCard = generateCards([thirdCard, secondCard, firstCard]);
+        table.players[0].cards.push(firstCard, secondCard);
+        table.players[1].cards.push(thirdCard, fourthCard);
         table.players[0].chips = 19950;
         table.players[1].chips = 19900;
         await table.save();
@@ -35,11 +38,17 @@ io.on("connection", (socket) => {
     }
   });
   socket.on("fold", async (turn, tableData) => {
+    const firstCard = generateCards();
+    const secondCard = generateCards([firstCard]);
+    const thirdCard = generateCards([secondCard, firstCard]);
+    const fourthCard = generateCards([thirdCard, secondCard, firstCard]);
     let { table, pot, playingChips } = tableData;
     const winner = table.players.find((el) => el.player !== turn);
     const loser = table.players.find((el) => el.player === turn);
     winner.chips = winner.chips + pot - 50;
     loser.chips = loser.chips - 100;
+    winner.cards = [firstCard, secondCard];
+    loser.cards = [thirdCard, fourthCard];
     playingChips[loser.player] = 100;
     playingChips[winner.player] = 50;
     pot = 150;
