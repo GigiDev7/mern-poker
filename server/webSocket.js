@@ -43,6 +43,7 @@ io.on("connection", (socket) => {
     const thirdCard = generateCards([secondCard, firstCard]);
     const fourthCard = generateCards([thirdCard, secondCard, firstCard]);
     let { table, pot, playingChips } = tableData;
+    table.turnsPlayed = 0;
     const winner = table.players.find((el) => el.player !== turn);
     const loser = table.players.find((el) => el.player === turn);
     winner.chips = winner.chips + pot - 50;
@@ -60,15 +61,58 @@ io.on("connection", (socket) => {
 
   socket.on("all-in", (turn, tableData) => {
     let { table, pot, playingChips } = tableData;
+    table.turnsPlayed++;
     const turnPlayer = table.players.find((el) => el.player === turn);
     const secondPlayer = table.players.find((el) => el.player !== turn);
     pot = pot + turnPlayer.chips;
     playingChips[turnPlayer.player] =
       turnPlayer.chips + playingChips[turnPlayer.player];
     turnPlayer.chips = 0;
-    io.emit("update-game", JSON.stringify(table), secondPlayer.player, {
-      pot,
-      playingChips,
-    });
+
+    if (table.turnsPlayed === 2) {
+      const firstCard = generateCards([
+        ...turnPlayer.cards,
+        ...secondPlayer.cards,
+      ]);
+      const secondCard = generateCards([
+        ...turnPlayer.cards,
+        ...secondPlayer.cards,
+        firstCard,
+      ]);
+      const thirdCard = generateCards([
+        ...turnPlayer.cards,
+        ...secondPlayer.cards,
+        firstCard,
+        secondCard,
+      ]);
+
+      const fourthCard = generateCards([
+        ...turnPlayer.cards,
+        ...secondPlayer.cards,
+        firstCard,
+        secondCard,
+        thirdCard,
+      ]);
+
+      const fifthCard = generateCards([
+        ...turnPlayer.cards,
+        ...secondPlayer.cards,
+        firstCard,
+        secondCard,
+        thirdCard,
+        fourthCard,
+      ]);
+
+      io.emit("update-game", JSON.stringify(table), secondPlayer.player, {
+        pot,
+        playingChips,
+        tableCards: [firstCard, secondCard, thirdCard, fourthCard, fifthCard],
+      });
+    } else {
+      io.emit("update-game", JSON.stringify(table), secondPlayer.player, {
+        pot,
+        playingChips,
+      });
+    }
   });
 });

@@ -11,14 +11,16 @@ import { io } from "socket.io-client";
 import { useParams } from "react-router-dom";
 import { AiTwotoneDollarCircle } from "react-icons/ai";
 import { BiDollarCircle } from "react-icons/bi";
+import {
+  checkRoyalFlush,
+  chechStraightFlush,
+} from "../utils/checkCardCombinations";
 
 const Table = () => {
-  const { table, playingChips, pot, turn } = useSelector(
+  const { table, playingChips, pot, turn, tableCards } = useSelector(
     (state: { tables: ITableState }) => state.tables
   );
   const { user } = useSelector((state: { auth: IUserState }) => state.auth);
-
-  const [update, setUpdate] = useState({});
 
   const player = table?.players.find((el) => el.player === user?.username);
   const opponent = table?.players.find((el) => el.player !== user?.username);
@@ -38,6 +40,16 @@ const Table = () => {
       dispatch(updateTable(JSON.parse(data), turn, gameData));
     });
   }, []);
+
+  useEffect(() => {
+    if (tableCards.length === 5) {
+      const playerCards = player?.cards;
+      const oponentCards = opponent?.cards;
+
+      let playerHand = checkRoyalFlush(playerCards!, tableCards);
+      let oponentHand = checkRoyalFlush(oponentCards!, tableCards);
+    }
+  }, [tableCards.length]);
 
   const handleFold = () => {
     socket.emit("fold", turn, { table, pot, playingChips });
@@ -77,8 +89,15 @@ const Table = () => {
           </div>
         </div>
       )}
+      {tableCards?.length && (
+        <div className="flex absolute top-1/2 left-1/2 gap-2 -translate-x-1/2 -translate-y-1/2">
+          {tableCards.map((item) => (
+            <Card type="personal" key={item} card={item} />
+          ))}
+        </div>
+      )}
       {pot && (
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 ">
+        <div className="absolute top-1/2 left-2 ">
           <p className="text-white text-xl flex items-center gap-1">
             {pot}
             <span>

@@ -8,6 +8,10 @@ const tableSchema = new mongoose.Schema({
       chips: { type: Number, default: 20000 },
     },
   ],
+  turnsPlayed: {
+    type: Number,
+    default: 0,
+  },
 });
 
 const Table = mongoose.model("table", tableSchema);

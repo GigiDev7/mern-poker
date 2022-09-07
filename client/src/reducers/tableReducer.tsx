@@ -10,6 +10,7 @@ export interface ITableState {
   playingChips: any;
   pot: number;
   turn: string;
+  tableCards: string[];
 }
 
 export interface ICreateTable {
@@ -32,7 +33,7 @@ export interface IUpdateTable {
   readonly payload: {
     tableData: { players: string[]; _id: string };
     turn: string;
-    gameData: { pot: number; playingChips: any };
+    gameData: { pot: number; playingChips: any; tableCards?: string[] };
   };
 }
 
@@ -61,6 +62,7 @@ export const tableReducer = (
     pot: 0,
     turn: "",
     error: null,
+    tableCards: [],
   },
   action: Action
 ) => {
@@ -81,6 +83,9 @@ export const tableReducer = (
         turn: action.payload.turn,
         playingChips: action.payload.gameData.playingChips,
         pot: action.payload.gameData.pot,
+        tableCards: action.payload.gameData.tableCards && [
+          ...action.payload.gameData.tableCards,
+        ],
       };
 
     case "UPDATE_CHIPS":
