@@ -11,10 +11,7 @@ import { io } from "socket.io-client";
 import { useParams } from "react-router-dom";
 import { AiTwotoneDollarCircle } from "react-icons/ai";
 import { BiDollarCircle } from "react-icons/bi";
-import {
-  checkRoyalFlush,
-  chechStraightFlush,
-} from "../utils/checkCardCombinations";
+import { checkRoyalFlush } from "../utils/checkCardCombinations";
 
 const Table = () => {
   const { table, playingChips, pot, turn, tableCards } = useSelector(
