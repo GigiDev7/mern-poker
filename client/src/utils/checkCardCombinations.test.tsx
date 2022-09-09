@@ -186,4 +186,12 @@ describe("check card combinations utils", () => {
       expect(res.playerHand).toEqual([]);
     });
   });
+
+  describe("checking high card", () => {
+    it("should return sorted cards", () => {
+      const res = checkHighCard(["9D", "7D"], ["JH", "2S", "QS", "AC", "3D"]);
+
+      expect(res).toEqual(["AC", "QS", "JH", "9D", "7D"]);
+    });
+  });
 });
