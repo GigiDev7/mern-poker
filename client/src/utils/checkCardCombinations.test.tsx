@@ -2,6 +2,7 @@ import {
   checkRoyalFlush,
   checkStraightFlush,
   checkFourOfKind,
+  checkFullHouse,
 } from "./checkCardCombinations";
 
 describe("check card combinations utils", () => {
@@ -62,6 +63,24 @@ describe("check card combinations utils", () => {
       const res = checkFourOfKind(["AC", "2H"], ["AS", "AH", "JH", "KD", "3H"]);
 
       expect(res.isFourOfKind).toBe(false);
+      expect(res.playerHand).toEqual([]);
+    });
+  });
+
+  describe("checking full house", () => {
+    it("should return true if its full house", () => {
+      const res = checkFullHouse(["AD", "KC"], ["AC", "KD", "AS", "3S", "2S"]);
+
+      expect(res.isFullHouse).toBe(true);
+      expect(res.playerHand).toEqual(
+        expect.arrayContaining(["AD", "AC", "AS", "KC", "KD"])
+      );
+    });
+
+    it("should return false if its not full house", () => {
+      const res = checkFullHouse(["AD", "KC"], ["AC", "KD", "3S", "2S", "4D"]);
+
+      expect(res.isFullHouse).toBe(false);
       expect(res.playerHand).toEqual([]);
     });
   });
