@@ -126,4 +126,28 @@ describe("check card combinations utils", () => {
       expect(res.playerHand).toEqual([]);
     });
   });
+
+  describe("checking three of a kind", () => {
+    it("should return true if its three of a kind", () => {
+      const res = checkThreeOfKind(
+        ["KD", "AD"],
+        ["KH", "KS", "2S", "4H", "JD"]
+      );
+
+      expect(res.isThreeOfKind).toBe(true);
+      expect(res.playerHand).toEqual(
+        expect.arrayContaining(["KD", "KH", "KS", "AD", "JD"])
+      );
+    });
+
+    it("should return false if its not three of a kind", () => {
+      const res = checkThreeOfKind(
+        ["KD", "AD"],
+        ["KH", "9S", "2S", "4H", "JD"]
+      );
+
+      expect(res.isThreeOfKind).toBe(false);
+      expect(res.playerHand).toEqual([]);
+    });
+  });
 });

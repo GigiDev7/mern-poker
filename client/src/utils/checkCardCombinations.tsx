@@ -408,18 +408,12 @@ export const checkThreeOfKind = (
 
   if (!entries.length) return { isThreeOfKind, playerHand };
 
+  isThreeOfKind = true;
   const threes = sorted.filter((el) => el.startsWith(entries[0][0]));
   playerHand = [...threes];
-  if (sorted[0].startsWith(entries[0][0])) {
-    playerHand.push(sorted[3], sorted[4]);
-    return { isThreeOfKind, playerHand };
-  }
-  if (sorted[1].startsWith(entries[0][0])) {
-    playerHand.push(sorted[4], sorted[5]);
-    return { isThreeOfKind, playerHand };
-  }
+  const leftCards = sorted.filter((el) => !el.startsWith(entries[0][0]));
 
-  playerHand.push(sorted[0], sorted[1]);
+  playerHand.push(leftCards[0], leftCards[1]);
   return { isThreeOfKind, playerHand };
 };
 
