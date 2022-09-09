@@ -13,6 +13,31 @@ export const sortCards = (cards: string[]) => {
   });
 };
 
+export const countCardFrequency = (cardsArr: string[]) => {
+  let frequencyObj: any = {};
+
+  for (let card of cardsArr) {
+    let st = card.slice(0, card.length - 1);
+    frequencyObj[st] ? frequencyObj[st]++ : (frequencyObj[st] = 1);
+  }
+
+  return frequencyObj;
+};
+
+export const helperRoyalFlush = (cardsArr: string[], cveti: string) => {
+  const royalFlush = [
+    `A${cveti}`,
+    `K${cveti}`,
+    `Q${cveti}`,
+    `J${cveti}`,
+    `10${cveti}`,
+  ];
+
+  const isRoyalFlushHand = royalFlush.every((el) => cardsArr.includes(el));
+
+  return { isRoyalFlushHand, royalFlush };
+};
+
 export const helperLowStraight = (cardsArr: string[]) => {
   let isLowStraight = false;
   let lowStraightHand: string[] = [];
@@ -34,17 +59,6 @@ export const helperLowStraight = (cardsArr: string[]) => {
   }
 
   return { isLowStraight, lowStraightHand };
-};
-
-export const countCardFrequency = (cardsArr: string[]) => {
-  let frequencyObj: any = {};
-
-  for (let card of cardsArr) {
-    let st = card.slice(0, card.length - 1);
-    frequencyObj[st] ? frequencyObj[st]++ : (frequencyObj[st] = 1);
-  }
-
-  return frequencyObj;
 };
 
 export const helperStraight = (cardsArr: string[]) => {

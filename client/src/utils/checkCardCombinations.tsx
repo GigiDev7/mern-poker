@@ -4,6 +4,7 @@ import {
   helperLowStraight,
   sortCards,
   helperStraight,
+  helperRoyalFlush,
 } from "./cardHelpers";
 
 export const checkRoyalFlush = (
@@ -23,15 +24,9 @@ export const checkRoyalFlush = (
     if (filteredCards.length >= 3) {
       let arr = [...filteredCards, ...playerCards];
       let cveti = playerCards[0][playerCards[0].length - 1];
-      const royalFlush = [
-        `A${cveti}`,
-        `K${cveti}`,
-        `Q${cveti}`,
-        `J${cveti}`,
-        `10${cveti}`,
-      ];
-      isRoyalFlush = royalFlush.every((el) => arr.includes(el));
-      if (isRoyalFlush) {
+      const { isRoyalFlushHand, royalFlush } = helperRoyalFlush(arr, cveti);
+      if (isRoyalFlushHand) {
+        isRoyalFlush = true;
         playerHand = [...royalFlush];
       }
     }
@@ -49,15 +44,9 @@ export const checkRoyalFlush = (
     if (filteredCardsOne.length >= 4) {
       let arr = [...filteredCardsOne, playerCards[0]];
       let cveti = playerCards[0][playerCards[0].length - 1];
-      const royalFlush = [
-        `A${cveti}`,
-        `K${cveti}`,
-        `Q${cveti}`,
-        `J${cveti}`,
-        `10${cveti}`,
-      ];
-      isRoyalFlush = royalFlush.every((el) => arr.includes(el));
-      if (isRoyalFlush) {
+      const { isRoyalFlushHand, royalFlush } = helperRoyalFlush(arr, cveti);
+      if (isRoyalFlushHand) {
+        isRoyalFlush = true;
         playerHand = [...royalFlush];
       }
     }
@@ -65,15 +54,10 @@ export const checkRoyalFlush = (
     if (filteredCardsTwo.length >= 4) {
       let arr = [...filteredCardsTwo, playerCards[1]];
       let cveti = playerCards[1][playerCards[1].length - 1];
-      const royalFlush = [
-        `A${cveti}`,
-        `K${cveti}`,
-        `Q${cveti}`,
-        `J${cveti}`,
-        `10${cveti}`,
-      ];
-      isRoyalFlush = royalFlush.every((el) => arr.includes(el));
-      if (isRoyalFlush) {
+      const { isRoyalFlushHand, royalFlush } = helperRoyalFlush(arr, cveti);
+
+      if (isRoyalFlushHand) {
+        isRoyalFlush = true;
         playerHand = [...royalFlush];
       }
     }
