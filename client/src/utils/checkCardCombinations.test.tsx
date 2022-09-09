@@ -9,6 +9,7 @@ import {
   checkTwoPair,
   checkOnePair,
   checkHighCard,
+  checkCardCombination,
 } from "./checkCardCombinations";
 
 describe("check card combinations utils", () => {
@@ -193,5 +194,16 @@ describe("check card combinations utils", () => {
 
       expect(res).toEqual(["AC", "QS", "JH", "9D", "7D"]);
     });
+  });
+});
+
+describe("check what card combinations player has", () => {
+  it("should return correct card combination that player has", () => {
+    const res = checkCardCombination(
+      ["AD", "QD"],
+      ["2S", "5D", "3D", "4D", "6H"]
+    );
+
+    expect(res.combination).toBe("Flush");
   });
 });
