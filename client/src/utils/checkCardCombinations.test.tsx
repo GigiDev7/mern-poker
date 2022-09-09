@@ -4,6 +4,11 @@ import {
   checkFourOfKind,
   checkFullHouse,
   checkFlush,
+  checkStraight,
+  checkThreeOfKind,
+  checkTwoPair,
+  checkOnePair,
+  checkHighCard,
 } from "./checkCardCombinations";
 
 describe("check card combinations utils", () => {
@@ -100,6 +105,24 @@ describe("check card combinations utils", () => {
       const res = checkFlush(["2S", "5S"], ["AD", "KC", "AS", "10S", "7H"]);
 
       expect(res.isFlush).toBe(false);
+      expect(res.playerHand).toEqual([]);
+    });
+  });
+
+  describe("checking straight", () => {
+    it("should return true if its straight", () => {
+      const res = checkStraight(["2S", "3H"], ["6D", "5S", "KH", "JD", "4H"]);
+
+      expect(res.isStraight).toBe(true);
+      expect(res.playerHand).toEqual(
+        expect.arrayContaining(["2S", "3H", "6D", "5S", "4H"])
+      );
+    });
+
+    it("should return false if its not straight", () => {
+      const res = checkStraight(["2S", "3H"], ["6D", "5S", "KH", "JD", "KH"]);
+
+      expect(res.isStraight).toBe(false);
       expect(res.playerHand).toEqual([]);
     });
   });
