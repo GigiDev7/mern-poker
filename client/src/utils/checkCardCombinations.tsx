@@ -1,17 +1,10 @@
-import { cardPriority, combinationPriority } from "../cardCombinations";
-
-const sortCards = (cards: string[]) => {
-  return [...cards].sort((a, b) => {
-    let st = a.slice(0, a.length - 1) as keyof typeof cardPriority;
-    let st2 = b.slice(0, b.length - 1) as keyof typeof cardPriority;
-
-    if (cardPriority[st] > cardPriority[st2]) {
-      return 1;
-    } else {
-      return -1;
-    }
-  });
-};
+import { cardPriority } from "../cardCombinations";
+import {
+  countCardFrequency,
+  helperLowStraight,
+  sortCards,
+  helperStraight,
+} from "./cardHelpers";
 
 export const checkRoyalFlush = (
   playerCards: string[],
@@ -104,56 +97,18 @@ export const checkStraightFlush = (
       (el) => el[el.length - 1] === playerCards[0][playerCards[0].length - 1]
     );
     if (filteredCards.length >= 3) {
-      let arr = [...filteredCards, ...playerCards];
-      let sorted = sortCards(arr);
-
-      if (
-        sorted[sorted.length - 1].startsWith("2") &&
-        sorted[sorted.length - 2].startsWith("3") &&
-        sorted[sorted.length - 3].startsWith("4") &&
-        sorted[sorted.length - 4].startsWith("5") &&
-        sorted[0].startsWith("A")
-      ) {
+      let sorted = sortCards([...filteredCards, ...playerCards]);
+      const { isLowStraight, lowStraightHand } = helperLowStraight(sorted);
+      if (isLowStraight) {
         isStraightFlush = true;
-        playerHand = [
-          sorted[sorted.length - 4],
-          sorted[sorted.length - 3],
-          sorted[sorted.length - 2],
-          sorted[sorted.length - 1],
-          sorted[0],
-        ];
+        playerHand = [...lowStraightHand];
       }
 
-      for (let i = 0; i < 4; i++) {
-        let prev = i;
-        let cur = i + 1;
-        let temp = 1;
-        while (cur < sorted.length && temp < 5) {
-          let prevCard = sorted[prev].slice(
-            0,
-            sorted[prev].length - 1
-          ) as keyof typeof cardPriority;
-          let curCard = sorted[cur].slice(
-            0,
-            sorted[cur].length - 1
-          ) as keyof typeof cardPriority;
-          let prevPr = cardPriority[prevCard];
-          let curPr = cardPriority[curCard];
-          if (curPr - prevPr === 1) {
-            temp++;
-            prev++;
-            cur++;
-          } else {
-            break;
-          }
-        }
-        if (temp >= 5) {
-          isStraightFlush = true;
-          playerHand = sorted.slice(i, i + 5);
-          break;
-        } else {
-          temp = 1;
-        }
+      const { isSTraightCombination, straightCombinationHand } =
+        helperStraight(sorted);
+      if (isSTraightCombination) {
+        isStraightFlush = true;
+        playerHand = [...straightCombinationHand];
       }
     }
   } else if (
@@ -168,111 +123,37 @@ export const checkStraightFlush = (
       (el) => el[el.length - 1] === playerCards[1][playerCards[1].length - 1]
     );
 
-    console.log(filteredCardsTwo);
-
     if (filteredCardsOne.length >= 4) {
-      let arr = [...filteredCardsOne, playerCards[0]];
-      let sorted = sortCards(arr);
+      let sorted = sortCards([...filteredCardsOne, playerCards[0]]);
 
-      if (
-        sorted[sorted.length - 1].startsWith("2") &&
-        sorted[sorted.length - 2].startsWith("3") &&
-        sorted[sorted.length - 3].startsWith("4") &&
-        sorted[sorted.length - 4].startsWith("5") &&
-        sorted[0].startsWith("A")
-      ) {
+      const { isLowStraight, lowStraightHand } = helperLowStraight(sorted);
+      if (isLowStraight) {
         isStraightFlush = true;
-        playerHand = [
-          sorted[sorted.length - 4],
-          sorted[sorted.length - 3],
-          sorted[sorted.length - 2],
-          sorted[sorted.length - 1],
-          sorted[0],
-        ];
+        playerHand = [...lowStraightHand];
       }
-      for (let i = 0; i < 4; i++) {
-        let prev = i;
-        let cur = i + 1;
-        let temp = 1;
-        while (cur < sorted.length && temp < 5) {
-          let prevCard = sorted[prev].slice(
-            0,
-            sorted[prev].length - 1
-          ) as keyof typeof cardPriority;
-          let curCard = sorted[cur].slice(
-            0,
-            sorted[cur].length - 1
-          ) as keyof typeof cardPriority;
-          let prevPr = cardPriority[prevCard];
-          let curPr = cardPriority[curCard];
-          if (curPr - prevPr === 1) {
-            temp++;
-            prev++;
-            cur++;
-          } else {
-            break;
-          }
-        }
-        if (temp >= 5) {
-          isStraightFlush = true;
-          playerHand = sorted.slice(i, i + 5);
-          break;
-        } else {
-          temp = 1;
-        }
+
+      const { isSTraightCombination, straightCombinationHand } =
+        helperStraight(sorted);
+      if (isSTraightCombination) {
+        isStraightFlush = true;
+        playerHand = [...straightCombinationHand];
       }
     }
 
     if (filteredCardsTwo.length >= 4) {
-      let arr = [...filteredCardsTwo, playerCards[1]];
-      let sorted = sortCards(arr);
+      let sorted = sortCards([...filteredCardsTwo, playerCards[1]]);
 
-      if (
-        sorted[sorted.length - 1].startsWith("2") &&
-        sorted[sorted.length - 2].startsWith("3") &&
-        sorted[sorted.length - 3].startsWith("4") &&
-        sorted[sorted.length - 4].startsWith("5") &&
-        sorted[0].startsWith("A")
-      ) {
+      const { isLowStraight, lowStraightHand } = helperLowStraight(sorted);
+      if (isLowStraight) {
         isStraightFlush = true;
-        playerHand = [
-          sorted[sorted.length - 4],
-          sorted[sorted.length - 3],
-          sorted[sorted.length - 2],
-          sorted[sorted.length - 1],
-          sorted[0],
-        ];
+        playerHand = [...lowStraightHand];
       }
-      for (let i = 0; i < 4; i++) {
-        let prev = i;
-        let cur = i + 1;
-        let temp = 1;
-        while (cur < sorted.length && temp < 5) {
-          let prevCard = sorted[prev].slice(
-            0,
-            sorted[prev].length - 1
-          ) as keyof typeof cardPriority;
-          let curCard = sorted[cur].slice(
-            0,
-            sorted[cur].length - 1
-          ) as keyof typeof cardPriority;
-          let prevPr = cardPriority[prevCard];
-          let curPr = cardPriority[curCard];
-          if (curPr - prevPr === 1) {
-            temp++;
-            prev++;
-            cur++;
-          } else {
-            break;
-          }
-        }
-        if (temp >= 5) {
-          isStraightFlush = true;
-          playerHand = sorted.slice(i, i + 5);
-          break;
-        } else {
-          temp = 1;
-        }
+
+      const { isSTraightCombination, straightCombinationHand } =
+        helperStraight(sorted);
+      if (isSTraightCombination) {
+        isStraightFlush = true;
+        playerHand = [...straightCombinationHand];
       }
     }
   }
@@ -287,16 +168,9 @@ export const checkFourOfKind = (
   let isFourOfKind = false;
   let playerHand: string[] = [];
 
-  const cards = [...playerCards, ...tableCards];
-  let sorted = sortCards(cards);
-  let tempObj: any = {};
-
-  for (let card of sorted) {
-    let st = card.slice(0, card.length - 1);
-    tempObj[st] ? tempObj[st]++ : (tempObj[st] = 1);
-  }
-
-  const entries = Object.entries(tempObj).filter((el) => el[1] === 4);
+  let sorted = sortCards([...playerCards, ...tableCards]);
+  const cardFrequency = countCardFrequency(sorted);
+  const entries = Object.entries(cardFrequency).filter((el) => el[1] === 4);
 
   if (entries.length) {
     isFourOfKind = true;
@@ -314,16 +188,10 @@ export const checkFullHouse = (playerCards: string[], tableCards: string[]) => {
   let isFullHouse = false;
   let playerHand: string[] = [];
 
-  const cards = [...playerCards, ...tableCards];
-  let sorted = sortCards(cards);
-  let tempObj: any = {};
+  let sorted = sortCards([...playerCards, ...tableCards]);
+  const cardFrequency = countCardFrequency(sorted);
 
-  for (let card of sorted) {
-    let st = card.slice(0, card.length - 1);
-    tempObj[st] ? tempObj[st]++ : (tempObj[st] = 1);
-  }
-
-  const entries: any = Object.entries(tempObj)
+  const entries: any = Object.entries(cardFrequency)
     .filter((el: any) => el[1] >= 2)
     .sort((a: any, b: any) => {
       if (a[1] >= b[1]) {
@@ -365,8 +233,7 @@ export const checkFlush = (playerCards: string[], tableCards: string[]) => {
   let isFlush = false;
   let playerHand: string[] = [];
 
-  const cards = [...playerCards, ...tableCards];
-  let sorted = sortCards(cards);
+  let sorted = sortCards([...playerCards, ...tableCards]);
 
   if (firstCveti === secondCveti) {
     const filteredCards = sorted.filter((el) => el.endsWith(firstCveti));
@@ -396,63 +263,23 @@ export const checkFlush = (playerCards: string[], tableCards: string[]) => {
 };
 
 export const checkStraight = (playerCards: string[], tableCards: string[]) => {
-  const cards = [...playerCards, ...tableCards];
-  let sorted = Array.from(new Set(sortCards(cards)));
+  let sorted = Array.from(new Set(sortCards([...playerCards, ...tableCards])));
 
   let isStraight = false;
   let playerHand: string[] = [];
 
-  if (
-    sorted[sorted.length - 1].startsWith("2") &&
-    sorted[sorted.length - 2].startsWith("3") &&
-    sorted[sorted.length - 3].startsWith("4") &&
-    sorted[sorted.length - 4].startsWith("5") &&
-    sorted[0].startsWith("A")
-  ) {
+  const { isLowStraight, lowStraightHand } = helperLowStraight(sorted);
+  if (isLowStraight) {
     isStraight = true;
-    playerHand = [
-      sorted[sorted.length - 4],
-      sorted[sorted.length - 3],
-      sorted[sorted.length - 2],
-      sorted[sorted.length - 1],
-      sorted[0],
-    ];
+    playerHand = [...lowStraightHand];
   }
 
   if (sorted.length >= 5) {
-    for (let i = 0; i < 4; i++) {
-      let cur = i;
-      let next = i + 1;
-      let temp = 1;
-
-      while (next < sorted.length) {
-        let curCard = sorted[cur].slice(
-          0,
-          sorted[cur].length - 1
-        ) as keyof typeof cardPriority;
-        let nextCard = sorted[next].slice(
-          0,
-          sorted[next].length - 1
-        ) as keyof typeof cardPriority;
-        let curPr = cardPriority[curCard];
-        let nextPr = cardPriority[nextCard];
-
-        if (nextPr - curPr === 1) {
-          cur++;
-          next++;
-          temp++;
-        } else {
-          break;
-        }
-      }
-
-      if (temp >= 5) {
-        isStraight = true;
-        playerHand = sorted.slice(i, i + 5);
-        break;
-      } else {
-        temp = 1;
-      }
+    const { isSTraightCombination, straightCombinationHand } =
+      helperStraight(sorted);
+    if (isSTraightCombination) {
+      isStraight = true;
+      playerHand = [...straightCombinationHand];
     }
   }
 
@@ -463,21 +290,13 @@ export const checkThreeOfKind = (
   playerCards: string[],
   tableCards: string[]
 ) => {
-  const cards = [...playerCards, ...tableCards];
-  let sorted = sortCards(cards);
+  let sorted = sortCards([...playerCards, ...tableCards]);
 
   let isThreeOfKind = false;
   let playerHand: string[] = [];
 
-  let tempObj: any = {};
-
-  for (let card of sorted) {
-    let st = card.slice(0, card.length - 1);
-    tempObj[st] ? tempObj[st]++ : (tempObj[st] = 1);
-  }
-
-  const entries = Object.entries(tempObj).filter((el) => el[1] === 3);
-
+  const cardFrequency = countCardFrequency(sorted);
+  const entries = Object.entries(cardFrequency).filter((el) => el[1] === 3);
   if (!entries.length) return { isThreeOfKind, playerHand };
 
   isThreeOfKind = true;
@@ -493,17 +312,9 @@ export const checkTwoPair = (playerCards: string[], tableCards: string[]) => {
   let isTwoPair = false;
   let playerHand: string[] = [];
 
-  const cards = [...playerCards, ...tableCards];
-  let sorted = sortCards(cards);
-
-  let tempObj: any = {};
-
-  for (let card of sorted) {
-    let st = card.slice(0, card.length - 1);
-    tempObj[st] ? tempObj[st]++ : (tempObj[st] = 1);
-  }
-
-  let entries = Object.entries(tempObj).filter((el) => el[1] === 2);
+  let sorted = sortCards([...playerCards, ...tableCards]);
+  const cardFrequency = countCardFrequency(sorted);
+  let entries = Object.entries(cardFrequency).filter((el) => el[1] === 2);
 
   if (entries.length < 2) return { isTwoPair, playerHand };
 
@@ -534,18 +345,9 @@ export const checkOnePair = (playerCards: string[], tableCards: string[]) => {
   let isOnePair = false;
   let playerHand: string[] = [];
 
-  const cards = [...playerCards, ...tableCards];
-
-  let sorted = sortCards(cards);
-
-  let tempObj: any = {};
-
-  for (let card of sorted) {
-    let st = card.slice(0, card.length - 1);
-    tempObj[st] ? tempObj[st]++ : (tempObj[st] = 1);
-  }
-
-  let entries = Object.entries(tempObj).filter((el) => el[1] === 2);
+  let sorted = sortCards([...playerCards, ...tableCards]);
+  const cardFrequency = countCardFrequency(sorted);
+  let entries = Object.entries(cardFrequency).filter((el) => el[1] === 2);
 
   if (!entries.length) return { isOnePair, playerHand };
 
