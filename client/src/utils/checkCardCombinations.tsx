@@ -301,46 +301,6 @@ export const checkFullHouse = (playerCards: string[], tableCards: string[]) => {
   }
 
   return { isFullHouse, playerHand };
-
-  /* if (entries[2][1] === 2) {
-    isFullHouse = true;
-    const threes = cards.filter((el) => el.startsWith(entries[0][0]));
-    let twos;
-
-    let first = entries[1][0] as keyof typeof cardPriority;
-    let second = entries[2][0] as keyof typeof cardPriority;
-    if (first < second) {
-      twos = cards.filter((el) => el.startsWith(first));
-    } else {
-      twos = cards.filter((el) => el.startsWith(second));
-    }
-    playerHand = [...threes, ...twos];
-
-    return { isFullHouse, playerHand };
-  } else if (entries[1][1] === 3) {
-    isFullHouse = true;
-    let threes;
-    let twos;
-    let first = entries[0][0] as keyof typeof cardPriority;
-    let second = entries[1][0] as keyof typeof cardPriority;
-
-    if (first < second) {
-      threes = cards.filter((el) => el.startsWith(first));
-      twos = cards.filter((el) => el.startsWith(second));
-    } else {
-      threes = cards.filter((el) => el.startsWith(second));
-      twos = cards.filter((el) => el.startsWith(first));
-    }
-    playerCards = [...threes, ...twos];
-
-    return { isFullHouse, playerHand };
-  } else {
-    isFullHouse = true;
-    const threes = cards.filter((el) => el.startsWith(entries[0][0]));
-    const twos = cards.filter((el) => el.startsWith(entries[1][0]));
-    playerHand = [...threes, ...twos];
-    return { isFullHouse, playerHand };
-  } */
 };
 
 export const checkFlush = (playerCards: string[], tableCards: string[]) => {
