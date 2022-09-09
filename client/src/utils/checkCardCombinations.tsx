@@ -436,14 +436,25 @@ export const checkTwoPair = (playerCards: string[], tableCards: string[]) => {
   if (entries.length < 2) return { isTwoPair, playerHand };
 
   isTwoPair = true;
-  const firstTwos = sorted.filter((el) => el.startsWith(entries[0][0]));
-  const secondTwos = sorted.filter((el) => el.startsWith(entries[1][0]));
-  playerHand = [...firstTwos, ...secondTwos];
+  if (entries.length === 2) {
+    const firstTwos = sorted.filter((el) => el.startsWith(entries[0][0]));
+    const secondTwos = sorted.filter((el) => el.startsWith(entries[1][0]));
+    playerHand = [...firstTwos, ...secondTwos];
+    const leftCards = sorted.filter(
+      (el) => !el.startsWith(entries[0][0]) && !el.startsWith(entries[1][0])
+    );
+    playerHand.push(leftCards[0]);
+  }
+  if (entries.length === 3) {
+    const firstTwos = sorted.filter((el) => el.startsWith(entries[1][0]));
+    const secondTwos = sorted.filter((el) => el.startsWith(entries[2][0]));
+    playerHand = [...firstTwos, ...secondTwos];
+    const leftCards = sorted.filter(
+      (el) => !el.startsWith(entries[1][0]) && !el.startsWith(entries[2][0])
+    );
+    playerHand.push(leftCards[0]);
+  }
 
-  const leftCards = sorted.filter(
-    (el) => !el.startsWith(entries[0][0]) && !el.startsWith(entries[1][0])
-  );
-  playerHand.push(leftCards[0]);
   return { isTwoPair, playerHand };
 };
 

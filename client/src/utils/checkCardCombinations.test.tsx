@@ -150,4 +150,40 @@ describe("check card combinations utils", () => {
       expect(res.playerHand).toEqual([]);
     });
   });
+
+  describe("checking two pairs", () => {
+    it("should return true if its two pair", () => {
+      const res = checkTwoPair(["9D", "7D"], ["AS", "9S", "AD", "7S", "4D"]);
+
+      expect(res.isTwoPair).toBe(true);
+      expect(res.playerHand).toEqual(
+        expect.arrayContaining(["AS", "AD", "9D", "9S"])
+      );
+    });
+
+    it("should return false if its not two pairs", () => {
+      const res = checkTwoPair(["9D", "7D"], ["KS", "9S", "AD", "2S", "4D"]);
+
+      expect(res.isTwoPair).toBe(false);
+      expect(res.playerHand).toEqual([]);
+    });
+  });
+
+  describe("checking one pair", () => {
+    it("should return true if its one pair", () => {
+      const res = checkOnePair(["9S", "7D"], ["KH", "KD", "2S", "3S", "8D"]);
+
+      expect(res.isOnePair).toBe(true);
+      expect(res.playerHand).toEqual(
+        expect.arrayContaining(["KD", "KH", "9S", "8D", "7D"])
+      );
+    });
+
+    it("should return false if its not one pair", () => {
+      const res = checkOnePair(["9S", "7D"], ["KH", "AD", "2S", "3S", "8D"]);
+
+      expect(res.isOnePair).toBe(false);
+      expect(res.playerHand).toEqual([]);
+    });
+  });
 });
