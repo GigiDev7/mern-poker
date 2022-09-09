@@ -1,4 +1,8 @@
-import { checkRoyalFlush, checkStraightFlush } from "./checkCardCombinations";
+import {
+  checkRoyalFlush,
+  checkStraightFlush,
+  checkFourOfKind,
+} from "./checkCardCombinations";
 
 describe("check card combinations utils", () => {
   describe("checking royal flush", () => {
@@ -40,6 +44,24 @@ describe("check card combinations utils", () => {
       );
 
       expect(res.isStraightFlush).toBe(false);
+      expect(res.playerHand).toEqual([]);
+    });
+  });
+
+  describe("checking four of a kind", () => {
+    it("should return true if its four of a kind", () => {
+      const res = checkFourOfKind(["AC", "2H"], ["AS", "AH", "JH", "AD", "3H"]);
+
+      expect(res.isFourOfKind).toBe(true);
+      expect(res.playerHand).toEqual(
+        expect.arrayContaining(["AC", "AH", "AD", "AS", "JH"])
+      );
+    });
+
+    it("should return false if its not four of a kind", () => {
+      const res = checkFourOfKind(["AC", "2H"], ["AS", "AH", "JH", "KD", "3H"]);
+
+      expect(res.isFourOfKind).toBe(false);
       expect(res.playerHand).toEqual([]);
     });
   });

@@ -239,16 +239,18 @@ export const checkFourOfKind = (
   for (let card of sorted) {
     let st = card.slice(0, card.length - 1);
     tempObj[st] ? tempObj[st]++ : (tempObj[st] = 1);
-    if (tempObj[st] === 4) {
-      isFourOfKind = true;
-      playerHand = [card, card, card, card];
-      if (sorted[0] === card) {
-        playerHand.push(sorted[4]);
-      } else {
-        playerHand.push(sorted[0]);
-      }
-      break;
-    }
+  }
+
+  const entries = Object.entries(tempObj).filter((el) => el[1] === 4);
+
+  if (entries.length) {
+    isFourOfKind = true;
+    const fours = sorted.filter((el) => el.startsWith(entries[0][0]));
+    playerHand = [...fours];
+    const leftCards = sorted.filter((el) => !el.startsWith(entries[0][0]));
+    playerHand.push(leftCards[0]);
+    console.log(playerHand);
+    return { isFourOfKind, playerHand };
   }
 
   return { isFourOfKind, playerHand };
