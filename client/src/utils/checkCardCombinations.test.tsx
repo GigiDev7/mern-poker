@@ -37,12 +37,14 @@ describe("check card combinations utils", () => {
   describe("checking straight flush", () => {
     it("should return true if its straight flush", () => {
       const res = checkStraightFlush(
-        ["10S", "2H"],
-        ["9S", "8S", "AC", "7S", "JS"]
+        ["10S", "2C"],
+        ["3C", "4C", "AC", "7S", "5C"]
       );
 
       expect(res.isStraightFlush).toBe(true);
-      expect(res.playerHand).toEqual(["JS", "10S", "9S", "8S", "7S"]);
+      expect(res.playerHand).toEqual(
+        expect.arrayContaining(["AC", "5C", "4C", "3C", "2C"])
+      );
     });
 
     it("should return false if its not straight flush", () => {
@@ -112,11 +114,11 @@ describe("check card combinations utils", () => {
 
   describe("checking straight", () => {
     it("should return true if its straight", () => {
-      const res = checkStraight(["2S", "3H"], ["6D", "5S", "KH", "JD", "4H"]);
+      const res = checkStraight(["2S", "3H"], ["7D", "5S", "AH", "JD", "4H"]);
 
       expect(res.isStraight).toBe(true);
       expect(res.playerHand).toEqual(
-        expect.arrayContaining(["2S", "3H", "6D", "5S", "4H"])
+        expect.arrayContaining(["2S", "3H", "AH", "5S", "4H"])
       );
     });
 

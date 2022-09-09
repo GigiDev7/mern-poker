@@ -106,6 +106,24 @@ export const checkStraightFlush = (
     if (filteredCards.length >= 3) {
       let arr = [...filteredCards, ...playerCards];
       let sorted = sortCards(arr);
+
+      if (
+        sorted[sorted.length - 1].startsWith("2") &&
+        sorted[sorted.length - 2].startsWith("3") &&
+        sorted[sorted.length - 3].startsWith("4") &&
+        sorted[sorted.length - 4].startsWith("5") &&
+        sorted[0].startsWith("A")
+      ) {
+        isStraightFlush = true;
+        playerHand = [
+          sorted[sorted.length - 4],
+          sorted[sorted.length - 3],
+          sorted[sorted.length - 2],
+          sorted[sorted.length - 1],
+          sorted[0],
+        ];
+      }
+
       for (let i = 0; i < 4; i++) {
         let prev = i;
         let cur = i + 1;
@@ -145,13 +163,33 @@ export const checkStraightFlush = (
     const filteredCardsOne = tableCards.filter(
       (el) => el[el.length - 1] === playerCards[0][playerCards[0].length - 1]
     );
+
     const filteredCardsTwo = tableCards.filter(
       (el) => el[el.length - 1] === playerCards[1][playerCards[1].length - 1]
     );
 
+    console.log(filteredCardsTwo);
+
     if (filteredCardsOne.length >= 4) {
       let arr = [...filteredCardsOne, playerCards[0]];
       let sorted = sortCards(arr);
+
+      if (
+        sorted[sorted.length - 1].startsWith("2") &&
+        sorted[sorted.length - 2].startsWith("3") &&
+        sorted[sorted.length - 3].startsWith("4") &&
+        sorted[sorted.length - 4].startsWith("5") &&
+        sorted[0].startsWith("A")
+      ) {
+        isStraightFlush = true;
+        playerHand = [
+          sorted[sorted.length - 4],
+          sorted[sorted.length - 3],
+          sorted[sorted.length - 2],
+          sorted[sorted.length - 1],
+          sorted[0],
+        ];
+      }
       for (let i = 0; i < 4; i++) {
         let prev = i;
         let cur = i + 1;
@@ -188,6 +226,23 @@ export const checkStraightFlush = (
     if (filteredCardsTwo.length >= 4) {
       let arr = [...filteredCardsTwo, playerCards[1]];
       let sorted = sortCards(arr);
+
+      if (
+        sorted[sorted.length - 1].startsWith("2") &&
+        sorted[sorted.length - 2].startsWith("3") &&
+        sorted[sorted.length - 3].startsWith("4") &&
+        sorted[sorted.length - 4].startsWith("5") &&
+        sorted[0].startsWith("A")
+      ) {
+        isStraightFlush = true;
+        playerHand = [
+          sorted[sorted.length - 4],
+          sorted[sorted.length - 3],
+          sorted[sorted.length - 2],
+          sorted[sorted.length - 1],
+          sorted[0],
+        ];
+      }
       for (let i = 0; i < 4; i++) {
         let prev = i;
         let cur = i + 1;
@@ -346,6 +401,23 @@ export const checkStraight = (playerCards: string[], tableCards: string[]) => {
 
   let isStraight = false;
   let playerHand: string[] = [];
+
+  if (
+    sorted[sorted.length - 1].startsWith("2") &&
+    sorted[sorted.length - 2].startsWith("3") &&
+    sorted[sorted.length - 3].startsWith("4") &&
+    sorted[sorted.length - 4].startsWith("5") &&
+    sorted[0].startsWith("A")
+  ) {
+    isStraight = true;
+    playerHand = [
+      sorted[sorted.length - 4],
+      sorted[sorted.length - 3],
+      sorted[sorted.length - 2],
+      sorted[sorted.length - 1],
+      sorted[0],
+    ];
+  }
 
   if (sorted.length >= 5) {
     for (let i = 0; i < 4; i++) {
